@@ -49,7 +49,8 @@ class Calculator extends Component {
     let waiting = this.state.waiting
     //let result = this.state.result
     //console.log(operator)
-    if ((operator === null && waiting === false) || operator !== newOperator) {
+    if ((operator === null && waiting === false)) {
+      console.log("Main")
       display = newOperator
       previousOperand = operand
       operand = ""
@@ -59,17 +60,37 @@ class Calculator extends Component {
     }
     else {
       if (operator === 'x') {
+        console.log("inside x " + previousOperand + operator + operand)
+        operator = newOperator
         operand = previousOperand * operand
         display = operand
         previousOperand = operand
         operand = ""
         console.log(previousOperand + operator + operand)
       }
-      if (operator === '/') {
-        console.log(previousOperand + operator + operand)
+      else if (operator === '/') {
+        console.log("inside / " + previousOperand + operator + operand)
+        operator = newOperator
         operand = previousOperand / operand
         display = operand
-        //operator = null
+        previousOperand = operand
+        operand = ""
+        console.log(previousOperand + operator + operand)
+      }
+      else if (operator === '+') {
+        console.log("inside + " + previousOperand + operator + operand)
+        operator = newOperator
+        operand = previousOperand + operand
+        display = operand
+        previousOperand = operand
+        operand = ""
+        console.log(previousOperand + operator + operand)
+      }
+      else if (operator === '-') {
+        console.log("inside - " + previousOperand + operator + operand)
+        operator = newOperator
+        operand = previousOperand - operand
+        display = operand
         previousOperand = operand
         operand = ""
         console.log(previousOperand + operator + operand)
@@ -102,7 +123,7 @@ class Calculator extends Component {
           display = previousOperand
         }
       }
-      if (operator === '/') {
+      else if (operator === '/') {
         if (operand !== null && operand !== "") {
           console.log(previousOperand + operator + operand)
           operand = previousOperand / operand
@@ -112,8 +133,28 @@ class Calculator extends Component {
           display = previousOperand
         }
       }
+      else if (operator === '+') {
+        if (operand !== null && operand !== "") {
+          console.log(previousOperand + operator + operand)
+          operand = previousOperand + operand
+          display = operand
+        }
+        else {
+          display = previousOperand
+        }
+      }
+      else if (operator === '-') {
+        if (operand !== null && operand !== "") {
+          console.log(previousOperand + operator + operand)
+          operand = previousOperand - operand
+          display = operand
+        }
+        else {
+          display = previousOperand
+        }
+      }
       operator = null
-      previousOperand = null
+      //previousOperand = null
       waiting = false
       result = true
     }
