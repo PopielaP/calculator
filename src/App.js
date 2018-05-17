@@ -19,10 +19,10 @@ class Calculator extends Component {
     let operand = this.state.operand
     let display = this.state.display
     let result = this.state.result
-    let operator = this.state.operator
+    //let operator = this.state.operator
     operand = operand.toString()
     if (operand.length<8) {
-      if (operand !== "0" && result === false && operator === null) {
+      if (operand !== "0" && result === false) {
         operand = operand + newOperand.toString()
       }
       else {
@@ -62,7 +62,7 @@ class Calculator extends Component {
       if (operator === 'x') {
         console.log("inside x " + previousOperand + operator + operand)
         operator = newOperator
-        operand = previousOperand * operand
+        operand = parseFloat(previousOperand) * parseFloat(operand)
         display = operand
         previousOperand = operand
         operand = ""
@@ -71,7 +71,7 @@ class Calculator extends Component {
       else if (operator === '/') {
         console.log("inside / " + previousOperand + operator + operand)
         operator = newOperator
-        operand = previousOperand / operand
+        operand = parseFloat(previousOperand) / parseFloat(operand)
         display = operand
         previousOperand = operand
         operand = ""
@@ -80,7 +80,7 @@ class Calculator extends Component {
       else if (operator === '+') {
         console.log("inside + " + previousOperand + operator + operand)
         operator = newOperator
-        operand = previousOperand + operand
+        operand = parseFloat(previousOperand) + parseFloat(operand)
         display = operand
         previousOperand = operand
         operand = ""
@@ -89,7 +89,7 @@ class Calculator extends Component {
       else if (operator === '-') {
         console.log("inside - " + previousOperand + operator + operand)
         operator = newOperator
-        operand = previousOperand - operand
+        operand = parseFloat(previousOperand) - parseFloat(operand)
         display = operand
         previousOperand = operand
         operand = ""
@@ -106,6 +106,23 @@ class Calculator extends Component {
     })
   }
 
+  setPercentages() {
+    let display = this.state.display
+    let operand = this.state.operand
+    if (operand === "" || operand === "0") {
+      display = "0"
+      operand = "0"
+    }
+    else {
+      operand = operand / 100
+      display = operand
+    }
+    this.setState ({
+      display: display,
+      operand: operand
+    })
+  }
+
   setResult() {
     let display = this.state.display
     let operator = this.state.operator
@@ -116,7 +133,7 @@ class Calculator extends Component {
     if (previousOperand !== null && result === false) {
       if (operator === 'x') {
         if (operand !== null && operand !== "") {
-          operand = previousOperand * operand
+          operand = parseFloat(previousOperand) * parseFloat(operand)
           display = operand
         }
         else {
@@ -126,7 +143,7 @@ class Calculator extends Component {
       else if (operator === '/') {
         if (operand !== null && operand !== "") {
           console.log(previousOperand + operator + operand)
-          operand = previousOperand / operand
+          operand = parseFloat(previousOperand) / parseFloat(operand)
           display = operand
         }
         else {
@@ -136,7 +153,7 @@ class Calculator extends Component {
       else if (operator === '+') {
         if (operand !== null && operand !== "") {
           console.log(previousOperand + operator + operand)
-          operand = previousOperand + operand
+          operand = parseFloat(previousOperand) + parseFloat(operand)
           display = operand
         }
         else {
@@ -146,7 +163,7 @@ class Calculator extends Component {
       else if (operator === '-') {
         if (operand !== null && operand !== "") {
           console.log(previousOperand + operator + operand)
-          operand = previousOperand - operand
+          operand = parseFloat(previousOperand) - parseFloat(operand)
           display = operand
         }
         else {
@@ -170,13 +187,25 @@ class Calculator extends Component {
 
   clearDisplay() {
     let operand = this.state.operand
+    let previousOperand = this.state.previousOperand
+    let operator = this.state.operator
     let display = this.state.display
-    display = "0"
-    operand = ""
+    let waiting = this.state.waiting
+    let result = this.state.result
+    display = 0
+    operand = 0
+    previousOperand = null
+    operator = null
+    waiting = false
+    result = false
 
     this.setState ({
       operand: operand,
-      display: display
+      display: display,
+      previousOperand: previousOperand,
+      operator: operator,
+      waiting: waiting,
+      result: result
     })
   }
 
@@ -188,7 +217,7 @@ class Calculator extends Component {
         <div className="row">
           <div className="cellButton operator" onClick={() => this.clearDisplay()}>AC</div>
           <div className="cellButton operator">C</div>
-          <div className="cellButton operator" onClick={() => this.setOperator('%')}>%</div>
+          <div className="cellButton operator" onClick={() => this.setPercentages('%')}>%</div>
           <div className="cellButton operator" onClick={() => this.setOperator('/')}>/</div>
         </div>
         <div className="row">
