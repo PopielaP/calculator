@@ -57,6 +57,37 @@ class Calculator extends Component {
     })
   }
 
+  deleteOperand() {
+    let operand = this.state.operand
+    let display = this.state.display
+    let operator = this.state.operator
+    let previousOperand = this.state.previousOperand
+    let waiting = this.state.waiting
+    if (operand.length > 1) {
+      operand = operand.substring(0, operand.length - 1)
+    }
+    else {
+      operand = '0'
+    }
+    //console.log('!!!' + operand)
+
+    if (operator !== null) {
+      operand = previousOperand
+      previousOperand = null
+      operator = null
+      waiting = false
+    }
+    display = operand
+    //console.log('delete! ' + operand)
+
+    this.setState ({
+      operand: operand,
+      display: display,
+      operator: operator,
+      waiting: waiting
+    })
+  }
+
   setOperator(newOperator) {
 
     let display = this.state.display
@@ -116,6 +147,7 @@ class Calculator extends Component {
         console.log(previousOperand + operator + operand)
       }
     }
+
     this.setState ({
       display: display,
       operand: operand,
@@ -245,7 +277,7 @@ class Calculator extends Component {
         <div className="displayWindow">{display}</div>
         <div className="row">
           <div className="cellButton operator" onClick={() => this.clearDisplay()}>AC</div>
-          <div className="cellButton operator">C</div>
+          <div className="cellButton operator" onClick={() => this.deleteOperand()}>C</div>
           <div className="cellButton operator" onClick={() => this.setPercentages('%')}>%</div>
           <div className="cellButton operator" onClick={() => this.setOperator('/')}>/</div>
         </div>
