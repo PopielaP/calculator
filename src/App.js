@@ -11,7 +11,8 @@ class Calculator extends Component {
       operator: null,
       display: 0,
       waiting: false,
-      result: false
+      result: false,
+      dot: false
     }
   }
 
@@ -19,15 +20,30 @@ class Calculator extends Component {
     let operand = this.state.operand
     let display = this.state.display
     let result = this.state.result
+    let dot = this.state.dot
     //let operator = this.state.operator
     operand = operand.toString()
     if (operand.length<8) {
-      if (operand !== "0" && result === false) {
-        operand = operand + newOperand.toString()
+      if (newOperand === '.' && dot === false) {
+        if (operand === '') {
+          operand = '0' + newOperand.toString()
+          dot = true
+          console.log('dot ' + dot)
+        }
+        else {
+          operand = operand + newOperand.toString()
+          dot = true
+          console.log('dot ' + dot)
+        }
       }
       else {
-          operand = newOperand
-          result = false
+        if (operand !== "0" && result === false && newOperand !== '.') {
+          operand = operand + newOperand.toString()
+        }
+        else if (newOperand !== '.') {
+            operand = newOperand
+            result = false
+        }
       }
     }
     display = operand
@@ -36,7 +52,8 @@ class Calculator extends Component {
     this.setState ({
       operand: operand,
       display: display,
-      result: result
+      result: result,
+      dot: dot
     })
   }
 
@@ -47,6 +64,9 @@ class Calculator extends Component {
     let operand = this.state.operand
     let previousOperand = this.state.previousOperand
     let waiting = this.state.waiting
+    let dot = this.state.dot
+
+    dot = false
     //let result = this.state.result
     //console.log(operator)
     if ((operator === null && waiting === false)) {
@@ -102,6 +122,7 @@ class Calculator extends Component {
       operator: operator,
       previousOperand: previousOperand,
       waiting: waiting,
+      dot: dot
       //result: result
     })
   }
@@ -130,6 +151,9 @@ class Calculator extends Component {
     let previousOperand = this.state.previousOperand
     let waiting = this.state.waiting
     let result = this.state.result
+    let dot = this.state.dot
+
+    dot = false
     if (previousOperand !== null && result === false) {
       if (operator === 'x') {
         if (operand !== null && operand !== "") {
@@ -181,7 +205,8 @@ class Calculator extends Component {
       previousOperand: previousOperand,
       operator: operator,
       waiting: waiting,
-      result: result
+      result: result,
+      dot: dot
     })
   }
 
@@ -192,6 +217,9 @@ class Calculator extends Component {
     let display = this.state.display
     let waiting = this.state.waiting
     let result = this.state.result
+    let dot = this.state.dot
+
+    dot = false
     display = 0
     operand = 0
     previousOperand = null
@@ -205,7 +233,8 @@ class Calculator extends Component {
       previousOperand: previousOperand,
       operator: operator,
       waiting: waiting,
-      result: result
+      result: result,
+      dot: dot
     })
   }
 
@@ -240,7 +269,7 @@ class Calculator extends Component {
         </div>
         <div className="row">
           <div className="cellButton" onClick={() => this.setOperand(0)}>0</div>
-          <div className="cellButton">.</div>
+          <div className="cellButton"onClick={() => this.setOperand('.')}>.</div>
           <div className="cellButton equal" onClick={() => this.setResult()}>=</div>
         </div>
       </div>
